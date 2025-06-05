@@ -1,0 +1,101 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202506051300-0
+      author: Andrei
+      changes:
+        - createTable:
+            tableName: "usr"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: "pk_user"
+              - column:
+                  name: "name"
+                  type: "VARCHAR(500)"
+              - column:
+                  name: "date_of_birth"
+                  type: "DATE"
+              - column:
+                  name: "password"
+                  type: "VARCHAR(500)"
+        - createTable:
+            tableName: "account"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: "pk_account"
+              - column:
+                  name: "user_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: "uk_account_user_id"
+                    foreignKeyName: "fk_account_user"
+                    references: "usr(id)"
+              - column:
+                  name: "balance"
+                  type: "DECIMAL(19,2)"
+              - column:
+                  name: "initial_balance"
+                  type: "DECIMAL(19,2)"
+        - createTable:
+            tableName: "email_data"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: "pk_email_data"
+              - column:
+                  name: "user_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+                    foreignKeyName: "fk_email_data_user"
+                    references: "usr(id)"
+              - column:
+                  name: "email"
+                  type: "VARCHAR(200)"
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: "uk_email_data_email"
+        - createTable:
+            tableName: "phone_data"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: "pk_phone_data"
+              - column:
+                  name: "user_id"
+                  type: "BIGINT"
+                  constraints:
+                    nullable: false
+                    foreignKeyName: "fk_phone_data_user"
+                    references: "usr(id)"
+              - column:
+                  name: "phone"
+                  type: "VARCHAR(13)"
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: "uk_phone_data_phone"

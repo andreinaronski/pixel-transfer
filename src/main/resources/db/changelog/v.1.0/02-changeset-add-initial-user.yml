@@ -1,0 +1,55 @@
+databaseChangeLog:
+  -  changeSet:
+       id: 202506051400-0
+       author: Andrei
+       changes:
+         - loadData:
+            tableName: "usr"
+            file: db/data/users.csv
+            separator: ","
+            columns:
+              -  column:
+                   name: "name"
+                   type: "VARCHAR(500)"
+              -  column:
+                   name: "date_of_birth"
+                   type: "DATE"
+              -  column:
+                   name: "password"
+                   type: "VARCHAR(500)"
+         - loadData:
+             tableName: "account"
+             file: db/data/accounts.csv
+             separator: ","
+             columns:
+               - column:
+                   name: "user_id"
+                   type: "BIGINT"
+               - column:
+                   name: "balance"
+                   type: "DECIMAL(19,2)"
+               - column:
+                   name: "initial_balance"
+                   type: "DECIMAL(19,2)"
+         - loadData:
+             tableName: "email_data"
+             file: db/data/emails.csv
+             separator: ","
+             columns:
+               - column:
+                   name: "user_id"
+                   type: "BIGINT"
+               - column:
+                   name: email
+                   type: "VARCHAR(200)"
+         - loadData:
+             tableName: "phone_data"
+             file: db/data/phones.csv
+             separator: ","
+             columns:
+               - column:
+                   name: "user_id"
+                   type: "BIGINT"
+               - column:
+                   name: phone
+                   type: "VARCHAR(13)"
