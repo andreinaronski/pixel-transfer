@@ -1,0 +1,61 @@
+services:
+  api:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: pixel-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/transfer
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    networks:
+      - pixel-net
+  redis:
+    image: redis:latest
+    container_name: pixel-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - pixel-net
+
+  postgres:
+    image: postgres:latest
+    container_name: pixel-postgres
+    environment:
+      POSTGRES_DB: transfer
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - pixel-net
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: pixel-redisinsight
+    restart: always
+    depends_on:
+      - redis
+    ports:
+      - "5540:5540"
+    volumes:
+      - redis-insight:/data
+    networks:
+      - pixel-net
+
+volumes:
+  redis-insight:
+  pgdata:
+
+networks:
+  pixel-net:
+    driver: bridge

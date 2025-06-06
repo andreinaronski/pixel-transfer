@@ -17,8 +17,11 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    @Value("${token.signing.secret}")
+    @Value("${token.secret}")
     private String secret;
+
+    @Value("${token.expiration-time}")
+    private long expirationTime;
 
     private final static String USER_ID_CLAIM_NAME = "userId";
 
@@ -33,7 +36,7 @@ public class JwtService {
         return Jwts.builder()
                 .claim(USER_ID_CLAIM_NAME, userId)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 3600_000)) // 1 час
+                .expiration(new Date(System.currentTimeMillis() + expirationTime)) // 1 час
                 .signWith(key)
                 .compact();
     }

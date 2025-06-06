@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.pixel</groupId>
 	<artifactId>transfer</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>transfer</name>
 	<description>Test task for Pioner Pixel</description>
 	<properties>

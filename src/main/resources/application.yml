@@ -23,5 +23,5 @@ logging:
     root: INFO
 
 token:
-  signing:
-    secret: myVerySuperDuperSecretKey123456789 # needs to be saved in secure place
+  expiration-time: 3600000
+  secret: myVerySuperDuperSecretKey123456789 # needs to be saved in secure place
