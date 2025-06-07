@@ -25,3 +25,6 @@ logging:
 token:
   expiration-time: 3600000
   secret: myVerySuperDuperSecretKey123456789 # needs to be saved in secure place
+
+cache:
+  expiration-time-in-sec: 60

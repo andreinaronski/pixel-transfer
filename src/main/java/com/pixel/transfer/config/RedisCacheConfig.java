@@ -1,6 +1,7 @@
 package com.pixel.transfer.config;
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -16,13 +17,16 @@ import java.time.Duration;
 @Configuration
 public class RedisCacheConfig {
 
+    @Value("${cache.expiration-time-in-sec}")
+    private long expirationTimeInSec;
+
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
         var serializer = new GenericJackson2JsonRedisSerializer()
                 .configure(objectMapper -> objectMapper.registerModules(new JavaTimeModule()));
 
         var config = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(1))
+                .entryTtl(Duration.ofSeconds(expirationTimeInSec))
                 .disableCachingNullValues()
                 .serializeValuesWith(
                         RedisSerializationContext.SerializationPair.fromSerializer(serializer)

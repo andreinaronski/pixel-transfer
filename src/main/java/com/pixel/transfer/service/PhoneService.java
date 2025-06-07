@@ -17,7 +17,7 @@ public class PhoneService {
     private final PhoneDataRepository phoneDataRepository;
 
     @Transactional
-    @CacheEvict(cacheNames = {"users", "usersSearch"}, allEntries = true)
+    @CacheEvict(cacheNames = "users", key = "#userId")
     public void addPhone(Long userId, String phone) {
         if (phoneDataRepository.existsByPhone(phone)) {
             throw new IllegalArgumentException("Phone is already taken");
@@ -31,7 +31,7 @@ public class PhoneService {
     }
 
     @Transactional
-    @CacheEvict(cacheNames = {"users", "usersSearch"}, allEntries = true)
+    @CacheEvict(cacheNames = "users", key = "#userId")
     public void removePhone(Long userId, Long id) {
         PhoneData phoneData = getPhone(id);
 
@@ -46,7 +46,7 @@ public class PhoneService {
     }
 
     @Transactional
-    @CacheEvict(cacheNames = {"users", "usersSearch"}, allEntries = true)
+    @CacheEvict(cacheNames = "users", key = "#userId")
     public void updatePhone(Long userId, Long id, PhoneDto newPhoneDto) {
         if (phoneDataRepository.existsByPhone(newPhoneDto.getPhone())) {
             throw new IllegalArgumentException("New phone is already taken");

@@ -7,7 +7,6 @@ import com.pixel.transfer.entity.User;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -21,7 +20,6 @@ public class SearchUserService {
 
     private final UserService userService;
 
-    @Cacheable(value = "usersSearch", key = "{#name, #email, #phone, #dateOfBirth, #pageable}")
     public Page<UserDto> searchUser(String name, String email, String phone, String dateOfBirth, Pageable pageable) {
         LocalDate dob = null;
         if (dateOfBirth != null) {
@@ -33,7 +31,7 @@ public class SearchUserService {
     }
 
     private Specification<User> buildSpec(String name, String email, String phone, LocalDate dateOfBirth) {
-        Specification<User> spec = Specification.where(null);
+        Specification<User> spec = Specification.not(null);
 
         if (dateOfBirth != null) {
             spec = spec.and((root, query, cb) -> cb.greaterThan(root.get("dateOfBirth"), dateOfBirth));

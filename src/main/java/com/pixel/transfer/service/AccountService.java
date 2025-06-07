@@ -5,6 +5,7 @@ import com.pixel.transfer.repository.AccountRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,7 +20,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
 
     @Transactional
-    @CacheEvict(cacheNames = {"users", "usersSearch"}, allEntries = true)
+    @CacheEvict(cacheNames = "users", allEntries = true)
     public void increaseBalances() {
         List<Account> accounts = accountRepository.findAll();
         for (Account account : accounts) {
@@ -39,7 +40,10 @@ public class AccountService {
     }
 
     @Transactional
-    @CacheEvict(cacheNames = {"users", "usersSearch"}, allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "users", key = "#fromUserId"),
+            @CacheEvict(cacheNames = "users", key = "#toUserId")
+    })
     public void transferMoney(Long fromUserId, Long toUserId, BigDecimal amount) {
         if (fromUserId.equals(toUserId)) {
             throw new IllegalArgumentException("Cannot transfer to the same user");

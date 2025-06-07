@@ -19,7 +19,7 @@ public class EmailService {
     private final EmailDataRepository emailDataRepository;
 
     @Transactional
-    @CacheEvict(cacheNames = {"users", "usersSearch"}, allEntries = true)
+    @CacheEvict(cacheNames = "users", key = "#userId")
     public void addEmail(Long userId, EmailDto emailDto) {
         if (emailDataRepository.existsByEmail(emailDto.getEmail())) {
             throw new IllegalArgumentException("Email is already taken");
@@ -34,7 +34,7 @@ public class EmailService {
     }
 
     @Transactional
-    @CacheEvict(cacheNames = {"users", "usersSearch"}, allEntries = true)
+    @CacheEvict(cacheNames = "users", key = "#userId")
     public void removeEmail(Long userId, Long id) {
         log.info("Deleting email with id={}.", id);
         EmailData emailData = getEmail(id);
@@ -51,7 +51,7 @@ public class EmailService {
     }
 
     @Transactional
-    @CacheEvict(cacheNames = {"users", "usersSearch"}, allEntries = true)
+    @CacheEvict(cacheNames = "users", key = "#userId")
     public void updateEmail(Long userId, Long id, EmailDto emailDto) {
         log.info("Updating email with id={}.", id);
         if (emailDataRepository.existsByEmail(emailDto.getEmail())) {
